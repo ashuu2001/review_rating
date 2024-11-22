@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Register</h1>
+<form method="POST">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    
+    <!-- New Fields -->
+    <input type="text" name="address" placeholder="Address" required>
+    <input type="text" name="city" placeholder="City" required>
+    <input type="text" name="state" placeholder="State" required>
+    <input type="text" name="postal_code" placeholder="Postal Code" required>
+    <input type="text" name="country" placeholder="Country" required>
+    
+    <button type="submit">Register</button>
+</form>
+{% endblock %}

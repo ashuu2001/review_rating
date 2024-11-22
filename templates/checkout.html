@@ -1,0 +1,47 @@
+<!-- checkout.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Payment</h1>
+<form id="payment-form">
+  <div id="card-element">
+    <!-- A Stripe Element will be inserted here. -->
+  </div>
+  <button id="submit">Pay</button>
+  <div id="error-message"></div>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  var stripe = Stripe('your-publishable-key'); // Your Stripe public key
+  var elements = stripe.elements();
+  var card = elements.create('card');
+  card.mount('#card-element');
+
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Show error to the user
+        document.getElementById('error-message').innerText = result.error.message;
+      } else {
+        // Send the token to your server
+        var token = result.token.id;
+        fetch('/save-card', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: token }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Card successfully saved:', data);
+        });
+      }
+    });
+  });
+</script>
+{% endblock %}
